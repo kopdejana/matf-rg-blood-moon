@@ -222,9 +222,12 @@ int main() {
         flowersModel.Draw(ourShader);
 
         // Moon
-        float moonX = 10.0f;
+        float moonT = glfwGetTime();
+        float moonV = 0.3;
+        float moonR = 13.0;
+        float moonX = cos(moonT*moonV)*moonR;
         float moonY = 10.0f;
-        float moonZ = -10.0f;
+        float moonZ = sin(moonT*moonV)*moonR;
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(moonX, moonY, moonZ));
         model = glm::scale(model, glm::vec3(1.0f));
