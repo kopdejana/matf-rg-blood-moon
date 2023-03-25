@@ -152,6 +152,8 @@ int main() {
     Model toriiModel("resources/objects/Torii/OldTorii.obj");
     Model lampModel("resources/objects/Lamp/Luster Grannys lamp N251121.obj");
     Model flowersModel("resources/objects/Flowers/Flowers pot N300622.obj");
+    Model moonModel("resources/objects/moon/moon.obj");
+    Model fireflyModel("resources/objects/Firefly/firefly.obj");
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -219,10 +221,19 @@ int main() {
         ourShader.setMat4("model", model);
         flowersModel.Draw(ourShader);
 
+        // Moon
+        float moonX = 10.0f;
+        float moonY = 10.0f;
+        float moonZ = -10.0f;
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(moonX, moonY, moonZ));
+        model = glm::scale(model, glm::vec3(1.0f));
+        ourShader.setMat4("model", model);
+        moonModel.Draw(ourShader);
+
+
         if (programState->ImGuiEnabled)
             DrawImGui(programState);
-
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

@@ -16,3 +16,5 @@ Prazan projekat sa pratećim bibliotekama koje koristimo na času.
 - Lamp: https://archive3d.net/?a=download&id=d4326772
 - Tree: https://archive3d.net/?a=download&id=ee6ee750
 - Flowers: https://archive3d.net/?a=download&id=cd86564b
+- Moon: https://sketchfab.com/3d-models/the-moon-9916fcec59f04b07b3e8d7f077dc3ded
+- Firefly: https://www.cgtrader.com/free-3d-models/character/fantasy-character/firefly-dee40bc2-a849-48a2-933c-7de8e862d93c
