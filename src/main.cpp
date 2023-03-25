@@ -204,6 +204,7 @@ int main() {
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(2.0f, 2.1f, 0.0f));
         model = glm::scale(model, glm::vec3(0.001f));
+        model = glm::rotate(model, glm::radians((float)cos(glfwGetTime())*100.0f)/4.0f, glm::vec3(1.0, 0.0, 0.0));
         ourShader.setMat4("model", model);
         lampModel.Draw(ourShader);
 
