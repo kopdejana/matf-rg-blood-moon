@@ -10,6 +10,16 @@ Prazan projekat sa pratećim bibliotekama koje koristimo na času.
 6. Šejderi idu u folder shaders. `Vertex shader` ima ekstenziju `.vs`, `fragment shader` ima ekstenziju `.fs`
 7. ALT+SHIFT+F10 -> project_base -> run
 
+# Implementirane lekcije
+- Obavezno:
+  - Nedelje 1-8
+  - Blending
+  - Face culling
+  - Advanced lighting
+- Grupa A:
+  - Cubemaps
+- Grupa B:
+
 # Modeli
 - Terrain: https://sketchfab.com/3d-models/iceland-landscape-234bb55771984297b0cd2d46f04087d3
 - Torii: https://www.cgtrader.com/free-3d-models/architectural/other/low-resolution-old-torii
