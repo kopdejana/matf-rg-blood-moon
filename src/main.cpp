@@ -235,6 +235,33 @@ int main() {
         ourShader.setMat4("model", model);
         moonModel.Draw(ourShader);
 
+        // Firefly - Flowers
+        glm::vec3 flowersFireflyPos = glm::vec3(cos(glfwGetTime()) + 4.0, 1.0f, -cos(glfwGetTime()*4.0f) + 3.0f);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, flowersFireflyPos);
+        model = glm::scale(model, glm::vec3(3.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        ourShader.setMat4("model", model);
+        fireflyModel.Draw(ourShader);
+
+        // Firefly - Tree
+        glm::vec3 treeFireflyPos = glm::vec3(-cos(glfwGetTime()*2.0f)*0.4f, 4.2f, 4.8f);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, treeFireflyPos);
+        model = glm::scale(model, glm::vec3(3.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        ourShader.setMat4("model", model);
+        fireflyModel.Draw(ourShader);
+
+        // Firefly - Torii
+        glm::vec3 toriiFireflyPos = glm::vec3(cos(glfwGetTime())*0.6+1.7f, 1.0f, -cos(glfwGetTime())*0.6f);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, toriiFireflyPos);
+        model = glm::scale(model, glm::vec3(3.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        ourShader.setMat4("model", model);
+        fireflyModel.Draw(ourShader);
+
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);
