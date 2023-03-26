@@ -42,6 +42,9 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+// Spotlight
+bool bTorch = true;
+
 struct ProgramState {
     glm::vec3 clearColor = glm::vec3(0);
     bool ImGuiEnabled = false;
@@ -324,6 +327,7 @@ int main() {
         ourShader.setVec3("fireflies[2].position", flowersFireflyPos);
 
         // Spot Light - Torch
+        ourShader.setBool("bTorch", bTorch);
         ourShader.setVec3("torch.ambient", glm::vec3(0.0, 0.0, 0.0));
         ourShader.setVec3("torch.diffuse", glm::vec3(1.0, 1.0, 1.0));
         ourShader.setVec3("torch.specular", glm::vec3(0.9, 0.9, 0.9));
@@ -531,6 +535,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         } else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
+    }
+    if (key == GLFW_KEY_F && action == GLFW_PRESS) {
+        bTorch = !bTorch;
     }
 }
 

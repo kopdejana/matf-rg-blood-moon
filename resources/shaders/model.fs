@@ -54,6 +54,7 @@ uniform PointLight lamp;
 uniform PointLight[NR_FIREFLIES] fireflies;
 
 uniform SpotLight torch;
+uniform bool bTorch;
 
 vec3 CalculateDirLight(DirLight light, vec3 normal, vec3 viewDir, vec3 tex);
 vec3 CalculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 tex);
@@ -73,9 +74,11 @@ void main() {
 
     vec3 result = vec3(0.0f);
 
-    //result += CalculateDirLight(dirLight, norm, viewDir, tex.xyz);
+    result += CalculateDirLight(dirLight, norm, viewDir, tex.xyz);
     result += CalculatePointLight(lamp, norm, FragPos, viewDir, tex.xyz);
-    result += CalculateSpotLight(torch, norm, FragPos, viewDir, tex.xyz);
+
+    if (bTorch)
+        result += CalculateSpotLight(torch, norm, FragPos, viewDir, tex.xyz);
 
     for (int i = 0; i < NR_FIREFLIES; i++)
         result += CalculatePointLight(fireflies[i], norm, FragPos, viewDir, tex.xyz);
