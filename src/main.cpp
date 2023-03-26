@@ -252,8 +252,88 @@ int main() {
         glClearColor(programState->clearColor.r, programState->clearColor.g, programState->clearColor.b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Moon position
+        float moonT = glfwGetTime();
+        float moonV = 0.3;
+        float moonR = 13.0;
+        float moonX = cos(moonT*moonV)*moonR;
+        float moonY = 10.0f;
+        float moonZ = sin(moonT*moonV)*moonR;
+
+        // Lamp light position
+        float lampAngle = glm::radians((float)cos(glfwGetTime())*100.0f)/4.0f;
+        float Yinit = 1.0f; // Otprilike
+        float lampY = Yinit + Yinit * cos(lampAngle);
+        float lampZ = - Yinit * tan(lampAngle);
 
         ourShader.use();
+
+        // DirLight - Moon
+        ourShader.setVec3("dirLight.ambient", glm::vec3(0.0, 0.0, 0.0));
+        ourShader.setVec3("dirLight.diffuse", glm::vec3(0.7, 0.7, 0.7));
+        ourShader.setVec3("dirLight.specular", glm::vec3(0.2, 0.2, 0.2));
+        ourShader.setVec3("dirLight.direction", glm::vec3(-moonX, -moonY, -moonZ));
+        ourShader.setVec3("viewPos", programState->camera.Position);
+
+        // PointLight - Lamp
+        ourShader.setVec3("lamp.ambient", glm::vec3(0.0, 0.0, 0.0));
+        ourShader.setVec3("lamp.diffuse", glm::vec3(1.0, 0.3, 0.0));
+        ourShader.setVec3("lamp.specular", glm::vec3(1.0, 0.3, 0.0));
+        ourShader.setFloat("lamp.constant", 1.0f);
+        ourShader.setFloat("lamp.linear", 0.5f);
+        ourShader.setFloat("lamp.quadratic", 0.5f);
+        ourShader.setVec3("lamp.position", glm::vec3(2.0f, lampY, lampZ));
+
+        // PointLights - fireflies
+        glm::vec3 fireflyAmbient = glm::vec3(0.0, 0.0, 0.0);
+        glm::vec3 fireflyDiffuse = glm::vec3(0.1, 0.1, 0.0);
+        glm::vec3 fireflySpecular = glm::vec3(0.3, 0.5, 0.0);
+
+        float fireflyConstant = 1.0f;
+        float fireflyLinear = 0.5f;
+        float fireflyQuadratic = 0.1f;
+
+        // Torii firefly
+        glm::vec3 toriiFireflyPos = glm::vec3(cos(glfwGetTime())*0.6+1.7f, 1.0f, -cos(glfwGetTime())*0.6f);
+        ourShader.setVec3("fireflies[0].ambient", fireflyAmbient);
+        ourShader.setVec3("fireflies[0].diffuse", fireflyDiffuse);
+        ourShader.setVec3("fireflies[0].specular", fireflySpecular);
+        ourShader.setFloat("fireflies[0].constant", fireflyConstant);
+        ourShader.setFloat("fireflies[0].linear", fireflyLinear);
+        ourShader.setFloat("fireflies[0].quadratic", fireflyQuadratic);
+        ourShader.setVec3("fireflies[0].position", toriiFireflyPos);
+
+        // Tree firefly
+        glm::vec3 treeFireflyPos = glm::vec3(-cos(glfwGetTime()*2.0f)*0.4f, 4.2f, 4.8f);
+        ourShader.setVec3("fireflies[1].ambient", fireflyAmbient);
+        ourShader.setVec3("fireflies[1].diffuse", fireflyDiffuse);
+        ourShader.setVec3("fireflies[1].specular", fireflySpecular);
+        ourShader.setFloat("fireflies[1].constant", fireflyConstant);
+        ourShader.setFloat("fireflies[1].linear", fireflyLinear);
+        ourShader.setFloat("fireflies[1].quadratic", fireflyQuadratic);
+        ourShader.setVec3("fireflies[1].position", treeFireflyPos);
+
+        // Flowers firefly
+        glm::vec3 flowersFireflyPos = glm::vec3(cos(glfwGetTime()) + 4.0, 1.0f, -cos(glfwGetTime()*4.0f) + 3.0f);
+        ourShader.setVec3("fireflies[2].ambient", fireflyAmbient);
+        ourShader.setVec3("fireflies[2].diffuse", fireflyDiffuse);
+        ourShader.setVec3("fireflies[2].specular", fireflySpecular);
+        ourShader.setFloat("fireflies[2].constant", fireflyConstant);
+        ourShader.setFloat("fireflies[2].linear", fireflyLinear);
+        ourShader.setFloat("fireflies[2].quadratic", fireflyQuadratic);
+        ourShader.setVec3("fireflies[2].position", flowersFireflyPos);
+
+        // Spot Light - Torch
+        ourShader.setVec3("torch.ambient", glm::vec3(0.0, 0.0, 0.0));
+        ourShader.setVec3("torch.diffuse", glm::vec3(1.0, 1.0, 1.0));
+        ourShader.setVec3("torch.specular", glm::vec3(0.9, 0.9, 0.9));
+        ourShader.setFloat("torch.constant", 1.0f);
+        ourShader.setFloat("torch.linear", 0.09f);
+        ourShader.setFloat("torch.quadratic", 0.03f);
+        ourShader.setVec3("torch.position", programState->camera.Position);
+        ourShader.setVec3("torch.direction", programState->camera.Front);
+        ourShader.setFloat("torch.cutOff", cos(glm::radians(15.0f)));
+        ourShader.setFloat("torch.outerCutOff", cos(glm::radians(20.0f)));
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(programState->camera.Zoom),
@@ -267,6 +347,7 @@ int main() {
         model = glm::translate(model, glm::vec3(0.0f));
         model = glm::scale(model, glm::vec3(1.0f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         terrainModel.Draw(ourShader);
 
         // Torii
@@ -274,6 +355,7 @@ int main() {
         model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.2f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         toriiModel.Draw(ourShader);
 
         // Lamp
@@ -282,6 +364,7 @@ int main() {
         model = glm::scale(model, glm::vec3(0.001f));
         model = glm::rotate(model, glm::radians((float)cos(glfwGetTime())*100.0f)/4.0f, glm::vec3(1.0, 0.0, 0.0));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         lampModel.Draw(ourShader);
 
         // Tree
@@ -289,6 +372,7 @@ int main() {
         model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 2.0f));
         model = glm::scale(model, glm::vec3(0.025f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         treeModel.Draw(ourShader);
 
         // Flowers
@@ -296,46 +380,42 @@ int main() {
         model = glm::translate(model, glm::vec3(4.0f, 0.1f, 4.0f));
         model = glm::scale(model, glm::vec3(0.001f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         flowersModel.Draw(ourShader);
 
         // Moon
-        float moonT = glfwGetTime();
-        float moonV = 0.3;
-        float moonR = 13.0;
-        float moonX = cos(moonT*moonV)*moonR;
-        float moonY = 10.0f;
-        float moonZ = sin(moonT*moonV)*moonR;
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(moonX, moonY, moonZ));
         model = glm::scale(model, glm::vec3(1.0f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         moonModel.Draw(ourShader);
 
         // Firefly - Flowers
-        glm::vec3 flowersFireflyPos = glm::vec3(cos(glfwGetTime()) + 4.0, 1.0f, -cos(glfwGetTime()*4.0f) + 3.0f);
         model = glm::mat4(1.0f);
         model = glm::translate(model, flowersFireflyPos);
         model = glm::scale(model, glm::vec3(3.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         fireflyModel.Draw(ourShader);
 
         // Firefly - Tree
-        glm::vec3 treeFireflyPos = glm::vec3(-cos(glfwGetTime()*2.0f)*0.4f, 4.2f, 4.8f);
         model = glm::mat4(1.0f);
         model = glm::translate(model, treeFireflyPos);
         model = glm::scale(model, glm::vec3(3.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         fireflyModel.Draw(ourShader);
 
         // Firefly - Torii
-        glm::vec3 toriiFireflyPos = glm::vec3(cos(glfwGetTime())*0.6+1.7f, 1.0f, -cos(glfwGetTime())*0.6f);
         model = glm::mat4(1.0f);
         model = glm::translate(model, toriiFireflyPos);
         model = glm::scale(model, glm::vec3(3.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
         fireflyModel.Draw(ourShader);
 
         //////////////////////////////////////  SKYBOX  //////////////////////////////////////////////////////////////
