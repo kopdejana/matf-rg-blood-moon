@@ -150,6 +150,7 @@ int main() {
 
     // build and compile shaders
     Shader ourShader("resources/shaders/model.vs", "resources/shaders/model.fs");
+    Shader moonShader("resources/shaders/moon.vs", "resources/shaders/moon.fs");
 
     // load models
     Model terrainModel("resources/objects/terrain/terrain.obj");
@@ -307,7 +308,7 @@ int main() {
         ourShader.setVec3("fireflies[0].position", toriiFireflyPos);
 
         // Tree firefly
-        glm::vec3 treeFireflyPos = glm::vec3(-cos(glfwGetTime()*2.0f)*0.4f, 4.2f, 4.8f);
+        glm::vec3 treeFireflyPos = glm::vec3(-cos(glfwGetTime()*2.0f)*0.4f, 5.0f, 7.0f);
         ourShader.setVec3("fireflies[1].ambient", fireflyAmbient);
         ourShader.setVec3("fireflies[1].diffuse", fireflyDiffuse);
         ourShader.setVec3("fireflies[1].specular", fireflySpecular);
@@ -388,12 +389,15 @@ int main() {
         flowersModel.Draw(ourShader);
 
         // Moon
+        moonShader.use();
+        moonShader.setVec3("lightColor", glm::vec3(1.0, 0.9, 1.0));
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(moonX, moonY, moonZ));
         model = glm::scale(model, glm::vec3(1.0f));
-        ourShader.setMat4("model", model);
-        ourShader.setFloat("material.shininess", 1.0);
-        moonModel.Draw(ourShader);
+        moonShader.setMat4("model", model);
+        moonShader.setMat4("view", view);
+        moonShader.setMat4("projection", projection);
+        moonModel.Draw(moonShader);
 
         // Firefly - Flowers
         model = glm::mat4(1.0f);
