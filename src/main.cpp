@@ -147,10 +147,13 @@ int main() {
     // configure global opengl state
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     // build and compile shaders
     Shader ourShader("resources/shaders/model.vs", "resources/shaders/model.fs");
     Shader moonShader("resources/shaders/moon.vs", "resources/shaders/moon.fs");
+    Shader fireflyShader("resources/shaders/firefly.vs", "resources/shaders/firefly.fs");
 
     // load models
     Model terrainModel("resources/objects/terrain/terrain.obj");
@@ -399,32 +402,33 @@ int main() {
         moonShader.setMat4("projection", projection);
         moonModel.Draw(moonShader);
 
+        // Fireflies
+        fireflyShader.use();
+        fireflyShader.setMat4("projection", projection);
+        fireflyShader.setMat4("view", view);
         // Firefly - Flowers
         model = glm::mat4(1.0f);
         model = glm::translate(model, flowersFireflyPos);
         model = glm::scale(model, glm::vec3(3.0f));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        ourShader.setMat4("model", model);
-        ourShader.setFloat("material.shininess", 1.0);
-        fireflyModel.Draw(ourShader);
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
+        fireflyShader.setMat4("model", model);
+        fireflyModel.Draw(fireflyShader);
 
         // Firefly - Tree
         model = glm::mat4(1.0f);
         model = glm::translate(model, treeFireflyPos);
         model = glm::scale(model, glm::vec3(3.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        ourShader.setMat4("model", model);
-        ourShader.setFloat("material.shininess", 1.0);
-        fireflyModel.Draw(ourShader);
+        fireflyShader.setMat4("model", model);
+        fireflyModel.Draw(fireflyShader);
 
         // Firefly - Torii
         model = glm::mat4(1.0f);
         model = glm::translate(model, toriiFireflyPos);
         model = glm::scale(model, glm::vec3(3.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        ourShader.setMat4("model", model);
-        ourShader.setFloat("material.shininess", 1.0);
-        fireflyModel.Draw(ourShader);
+        fireflyShader.setMat4("model", model);
+        fireflyModel.Draw(fireflyShader);
 
         //////////////////////////////////////  SKYBOX  //////////////////////////////////////////////////////////////
 
