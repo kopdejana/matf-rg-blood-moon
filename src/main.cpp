@@ -44,6 +44,9 @@ float lastFrame = 0.0f;
 
 // Spotlight
 bool bTorch = true;
+float spotlightRed = 1.0f;
+float spotlightGreen = 1.0f;
+float spotlightBlue = 1.0f;
 
 struct ProgramState {
     glm::vec3 clearColor = glm::vec3(0);
@@ -333,11 +336,11 @@ int main() {
         // Spot Light - Torch
         ourShader.setBool("bTorch", bTorch);
         ourShader.setVec3("torch.ambient", glm::vec3(0.0, 0.0, 0.0));
-        ourShader.setVec3("torch.diffuse", glm::vec3(1.0, 1.0, 1.0));
-        ourShader.setVec3("torch.specular", glm::vec3(0.9, 0.9, 0.9));
+        ourShader.setVec3("torch.diffuse", glm::vec3(spotlightRed, spotlightGreen, spotlightBlue));
+        ourShader.setVec3("torch.specular", glm::vec3(spotlightRed, spotlightGreen, spotlightBlue));
         ourShader.setFloat("torch.constant", 1.0f);
-        ourShader.setFloat("torch.linear", 0.09f);
-        ourShader.setFloat("torch.quadratic", 0.03f);
+        ourShader.setFloat("torch.linear", 0.2f);
+        ourShader.setFloat("torch.quadratic", 0.07f);
         ourShader.setVec3("torch.position", programState->camera.Position);
         ourShader.setVec3("torch.direction", programState->camera.Front);
         ourShader.setFloat("torch.cutOff", cos(glm::radians(15.0f)));
@@ -383,8 +386,6 @@ int main() {
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         treeModel.Draw(ourShader);
-        glEnable(GL_CULL_FACE);
-
         // Flowers
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(4.0f, 0.1f, 4.0f));
@@ -392,6 +393,7 @@ int main() {
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         flowersModel.Draw(ourShader);
+        glEnable(GL_CULL_FACE);
 
         // Moon
         moonShader.use();
@@ -529,6 +531,14 @@ void DrawImGui(ProgramState *programState) {
         ImGui::Text("(Yaw, Pitch): (%f, %f)", c.Yaw, c.Pitch);
         ImGui::Text("Camera front: (%f, %f, %f)", c.Front.x, c.Front.y, c.Front.z);
         ImGui::Checkbox("Camera mouse update", &programState->CameraMouseMovementUpdateEnabled);
+        ImGui::End();
+    }
+
+    {
+        ImGui::Begin("Spotlight color");
+        ImGui::SliderFloat("Red", &spotlightRed, 0.0f, 1.0f);
+        ImGui::SliderFloat("Green", &spotlightGreen, 0.0f, 1.0f);
+        ImGui::SliderFloat("Blue", &spotlightBlue, 0.0f, 1.0f);
         ImGui::End();
     }
 
