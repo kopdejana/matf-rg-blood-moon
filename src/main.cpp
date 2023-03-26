@@ -376,12 +376,14 @@ int main() {
         lampModel.Draw(ourShader);
 
         // Tree
+        glDisable(GL_CULL_FACE); // all leaves are rendered
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 2.0f));
         model = glm::scale(model, glm::vec3(0.025f));
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         treeModel.Draw(ourShader);
+        glEnable(GL_CULL_FACE);
 
         // Flowers
         model = glm::mat4(1.0f);
