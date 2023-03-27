@@ -51,6 +51,7 @@ float spotlightBlue = 1.0f;
 bool hdr = true;
 bool hdrKeyPressed = true;
 float exposure = 0.5f;
+bool bloodMoon = false;
 
 struct ProgramState {
     glm::vec3 clearColor = glm::vec3(0);
@@ -356,6 +357,8 @@ int main() {
 
         // DirLight - Moon
         glm::vec3 moonColor = glm::vec3(1.5, 1.0, 0.5);
+        if (bloodMoon)
+            moonColor = glm::vec3(1.5, 0.3, 0.0);
         ourShader.setVec3("dirLight.ambient", glm::vec3(0.0, 0.0, 0.0));
         ourShader.setVec3("dirLight.diffuse", moonColor);
         ourShader.setVec3("dirLight.specular", glm::vec3(0.0f));
@@ -367,7 +370,7 @@ int main() {
         ourShader.setVec3("lamp.diffuse", glm::vec3(1.0, 0.3, 0.0));
         ourShader.setVec3("lamp.specular", glm::vec3(1.0, 0.3, 0.0));
         ourShader.setFloat("lamp.constant", 1.0f);
-        ourShader.setFloat("lamp.linear", 0.5f);
+        ourShader.setFloat("lamp.linear", 0.7f);
         ourShader.setFloat("lamp.quadratic", 0.5f);
         ourShader.setVec3("lamp.position", glm::vec3(2.0f, lampY, lampZ));
 
@@ -376,15 +379,15 @@ int main() {
         float red = 2.0f;
         glm::vec3 fireflyColor = glm::vec3(red, green, 0.0f);
         glm::vec3 fireflyAmbient = glm::vec3(0.0, 0.0, 0.0);
-        glm::vec3 fireflyDiffuse = fireflyColor;
-        glm::vec3 fireflySpecular = fireflyColor;
+        glm::vec3 fireflyDiffuse = fireflyColor * 0.5f;
+        glm::vec3 fireflySpecular = fireflyColor * 0.5f;
 
         float fireflyConstant = 1.0f;
-        float fireflyLinear = 0.5f;
-        float fireflyQuadratic = 0.5f;
+        float fireflyLinear = 1.0f;
+        float fireflyQuadratic = 1.0f;
 
         // Torii firefly
-        glm::vec3 toriiFireflyPos = glm::vec3(cos(glfwGetTime())*0.6+1.7f, 1.0f, -cos(glfwGetTime())*0.6f);
+        glm::vec3 toriiFireflyPos = glm::vec3(cos(glfwGetTime())*0.6+1.7f, 0.7f, -cos(glfwGetTime())*0.6f);
         ourShader.setVec3("fireflies[0].ambient", fireflyAmbient);
         ourShader.setVec3("fireflies[0].diffuse", fireflyDiffuse);
         ourShader.setVec3("fireflies[0].specular", fireflySpecular);
@@ -416,8 +419,8 @@ int main() {
         // Spot Light - Torch
         ourShader.setBool("bTorch", bTorch);
         ourShader.setVec3("torch.ambient", glm::vec3(0.0, 0.0, 0.0));
-        ourShader.setVec3("torch.diffuse", glm::vec3(spotlightRed, spotlightGreen, spotlightBlue));
-        ourShader.setVec3("torch.specular", glm::vec3(spotlightRed, spotlightGreen, spotlightBlue));
+        ourShader.setVec3("torch.diffuse", glm::vec3(1.0 + spotlightRed, 1.0 + spotlightGreen, 1.0 + spotlightBlue));
+        ourShader.setVec3("torch.specular", glm::vec3(1.0 + spotlightRed, 1.0 + spotlightGreen, 1.0 + spotlightBlue));
         ourShader.setFloat("torch.constant", 1.0f);
         ourShader.setFloat("torch.linear", 0.2f);
         ourShader.setFloat("torch.quadratic", 0.07f);
@@ -651,6 +654,12 @@ void DrawImGui(ProgramState *programState) {
         ImGui::SliderFloat("Red", &spotlightRed, 0.0f, 1.0f);
         ImGui::SliderFloat("Green", &spotlightGreen, 0.0f, 1.0f);
         ImGui::SliderFloat("Blue", &spotlightBlue, 0.0f, 1.0f);
+        ImGui::End();
+    }
+
+    {
+        ImGui::Begin("Blood moon");
+        ImGui::Checkbox("Blood moon", &bloodMoon);
         ImGui::End();
     }
 
