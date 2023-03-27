@@ -355,8 +355,9 @@ int main() {
         ourShader.use();
 
         // DirLight - Moon
+        glm::vec3 moonColor = glm::vec3(1.5, 1.0, 0.5);
         ourShader.setVec3("dirLight.ambient", glm::vec3(0.0, 0.0, 0.0));
-        ourShader.setVec3("dirLight.diffuse", glm::vec3(1.0f));
+        ourShader.setVec3("dirLight.diffuse", moonColor);
         ourShader.setVec3("dirLight.specular", glm::vec3(0.0f));
         ourShader.setVec3("dirLight.direction", glm::vec3(-moonX, -moonY, -moonZ));
         ourShader.setVec3("viewPos", programState->camera.Position);
@@ -364,16 +365,19 @@ int main() {
         // PointLight - Lamp
         ourShader.setVec3("lamp.ambient", glm::vec3(0.0, 0.0, 0.0));
         ourShader.setVec3("lamp.diffuse", glm::vec3(1.0, 0.3, 0.0));
-        ourShader.setVec3("lamp.specular", glm::vec3(1.0, 0.3, 0.0)*5.0f);
+        ourShader.setVec3("lamp.specular", glm::vec3(1.0, 0.3, 0.0));
         ourShader.setFloat("lamp.constant", 1.0f);
         ourShader.setFloat("lamp.linear", 0.5f);
         ourShader.setFloat("lamp.quadratic", 0.5f);
         ourShader.setVec3("lamp.position", glm::vec3(2.0f, lampY, lampZ));
 
         // PointLights - fireflies
+        float green = cos(glfwGetTime()) + 1.5f;
+        float red = 2.0f;
+        glm::vec3 fireflyColor = glm::vec3(red, green, 0.0f);
         glm::vec3 fireflyAmbient = glm::vec3(0.0, 0.0, 0.0);
-        glm::vec3 fireflyDiffuse = glm::vec3(0.1, 0.1, 0.0);
-        glm::vec3 fireflySpecular = glm::vec3(0.3, 0.5, 0.0);
+        glm::vec3 fireflyDiffuse = fireflyColor;
+        glm::vec3 fireflySpecular = fireflyColor;
 
         float fireflyConstant = 1.0f;
         float fireflyLinear = 0.5f;
@@ -473,7 +477,7 @@ int main() {
 
         // Moon
         moonShader.use();
-        moonShader.setVec3("lightColor", glm::vec3(1.0, 0.9, 1.0));
+        moonShader.setVec3("lightColor", moonColor);
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(moonX, moonY, moonZ));
         model = glm::scale(model, glm::vec3(1.0f));
@@ -484,6 +488,7 @@ int main() {
 
         // Fireflies
         fireflyShader.use();
+        fireflyShader.setVec3("color", fireflyColor);
         fireflyShader.setMat4("projection", projection);
         fireflyShader.setMat4("view", view);
         // Firefly - Flowers
