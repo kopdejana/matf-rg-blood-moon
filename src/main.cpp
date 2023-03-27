@@ -356,11 +356,14 @@ int main() {
         ourShader.use();
 
         // DirLight - Moon
-        glm::vec3 moonColor = glm::vec3(1.5, 1.0, 0.5);
-        if (bloodMoon)
+        glm::vec3 moonColor = glm::vec3(1.5, 1.0, 0.7);
+        glm::vec3 moonLightColor = moonColor;
+        if (bloodMoon) {
             moonColor = glm::vec3(1.5, 0.3, 0.0);
+            moonLightColor *= 0.5f;
+        }
         ourShader.setVec3("dirLight.ambient", glm::vec3(0.0, 0.0, 0.0));
-        ourShader.setVec3("dirLight.diffuse", moonColor);
+        ourShader.setVec3("dirLight.diffuse", moonLightColor);
         ourShader.setVec3("dirLight.specular", glm::vec3(0.0f));
         ourShader.setVec3("dirLight.direction", glm::vec3(-moonX, -moonY, -moonZ));
         ourShader.setVec3("viewPos", programState->camera.Position);
@@ -599,6 +602,15 @@ void processInput(GLFWwindow *window) {
         programState->camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         programState->camera.ProcessKeyboard(RIGHT, deltaTime);
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        programState->camera.ProcessYawPitch(-5.0f, 0.0f);
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        programState->camera.ProcessYawPitch(+5.0f, 0.0f);
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        programState->camera.ProcessYawPitch(0.0f, -5.0f);
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        programState->camera.ProcessYawPitch(0.0f, +5.0f);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -657,12 +669,6 @@ void DrawImGui(ProgramState *programState) {
         ImGui::End();
     }
 
-    {
-        ImGui::Begin("Blood moon");
-        ImGui::Checkbox("Blood moon", &bloodMoon);
-        ImGui::End();
-    }
-
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -679,6 +685,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
     if (key == GLFW_KEY_F && action == GLFW_PRESS) {
         bTorch = !bTorch;
+    }
+    if (key == GLFW_KEY_B && action == GLFW_PRESS) {
+        bloodMoon = !bloodMoon;
     }
 }
 
