@@ -16,15 +16,15 @@
 `ESC` - exit
 
 # Implemented
--[x] Required: <br>
-  -[x] Weeks 1-8 <br>
-  -[x] Blending (discard) <br>
-  -[x] Face culling <br>
-  -[x] Advanced lighting <br>
--[x] Group A: <br>
-  -[x] Cubemaps <br>
--[x] Group B: <br>
-  -[x] HDR, Bloom <br>
+- Required: <br>
+  - Weeks 1-8 <br>
+  - Blending (discard) <br>
+  - Face culling <br>
+  - Advanced lighting <br>
+- Group A: <br>
+  - Cubemaps <br>
+- Group B: <br>
+  - HDR, Bloom <br>
 
 # Models used
 - Terrain: https://sketchfab.com/3d-models/iceland-landscape-234bb55771984297b0cd2d46f04087d3
