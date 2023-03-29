@@ -1,12 +1,10 @@
 # Blood Moon
 
-Computer Graphics course project. 
-
 [JoeyDeVries](https://github.com/JoeyDeVries) - [LearnOpenGL](https://github.com/JoeyDeVries/LearnOpenGL)  
 [spaske00](https://github.com/spaske00)- [Project base](https://github.com/matf-racunarska-grafika/project_base/)
 
 # Resources
-- Download objects: https://drive.google.com/file/d/1ethHz0q2RQeGzDVf7ucS052hkjk39qjT/view?usp=sharing
+- Download objects: 
 - Extract to `matf-rg-blood-moon/resources`
 
 # Keyboard instructions:
@@ -18,15 +16,15 @@ Computer Graphics course project.
 `ESC` - exit
 
 # Implemented
--[x] Required:
-  -[x] Weeks 1-8
-  -[x] Blending (discard)
-  -[x] Face culling
-  -[x] Advanced lighting
--[x] Group A:
-  -[x] Cubemaps
--[x] Group B:
-  -[x] HDR, Bloom
+-[x] Required: <br>
+  -[x] Weeks 1-8 <br>
+  -[x] Blending (discard) <br>
+  -[x] Face culling <br>
+  -[x] Advanced lighting <br>
+-[x] Group A: <br>
+  -[x] Cubemaps <br>
+-[x] Group B: <br>
+  -[x] HDR, Bloom <br>
 
 # Models used
 - Terrain: https://sketchfab.com/3d-models/iceland-landscape-234bb55771984297b0cd2d46f04087d3
