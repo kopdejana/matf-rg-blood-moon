@@ -173,7 +173,7 @@ int main() {
     Model lampModel("resources/objects/Lamp/Luster Grannys lamp N251121.obj");
     Model flowersModel("resources/objects/Flowers/Flowers pot N300622.obj");
     Model moonModel("resources/objects/moon/moon.obj");
-    Model fireflyModel("resources/objects/Firefly/firefly.obj");
+    Model fireflyModel("resources/objects/firefly/sphere.obj");
 
     /////////////////////////////////////////////   SKYBOX  ///////////////////////////////////////////////////////////
 
@@ -490,6 +490,7 @@ int main() {
         moonModel.Draw(moonShader);
 
         // Fireflies
+        float fireflyScale = 0.5f;
         fireflyShader.use();
         fireflyShader.setVec3("color", fireflyColor);
         fireflyShader.setMat4("projection", projection);
@@ -497,7 +498,7 @@ int main() {
         // Firefly - Flowers
         model = glm::mat4(1.0f);
         model = glm::translate(model, flowersFireflyPos);
-        model = glm::scale(model, glm::vec3(1.5f));
+        model = glm::scale(model, glm::vec3(fireflyScale));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
@@ -505,7 +506,7 @@ int main() {
         // Firefly - Tree
         model = glm::mat4(1.0f);
         model = glm::translate(model, treeFireflyPos);
-        model = glm::scale(model, glm::vec3(1.5f));
+        model = glm::scale(model, glm::vec3(fireflyScale));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
@@ -513,7 +514,7 @@ int main() {
         // Firefly - Torii
         model = glm::mat4(1.0f);
         model = glm::translate(model, toriiFireflyPos);
-        model = glm::scale(model, glm::vec3(1.5f));
+        model = glm::scale(model, glm::vec3(fireflyScale));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
