@@ -44,7 +44,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 // Spotlight
-bool bTorch = true;
+bool bTorch = false;
 float spotlightRed = 1.0f;
 float spotlightGreen = 1.0f;
 float spotlightBlue = 1.0f;
@@ -233,15 +233,14 @@ int main() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-    vector<std::string> faces
-            {
-                    FileSystem::getPath("resources/textures/skybox/sky.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/sky.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/sky.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/sky.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/sky.jpg"),
-                    FileSystem::getPath("resources/textures/skybox/sky.jpg")
-            };
+    vector<std::string> faces {
+        FileSystem::getPath("resources/textures/skybox/sky.jpg"),
+        FileSystem::getPath("resources/textures/skybox/sky.jpg"),
+        FileSystem::getPath("resources/textures/skybox/sky.jpg"),
+        FileSystem::getPath("resources/textures/skybox/sky.jpg"),
+        FileSystem::getPath("resources/textures/skybox/sky.jpg"),
+        FileSystem::getPath("resources/textures/skybox/sky.jpg")
+    };
     unsigned int cubemapTexture = loadCubemap(faces);
 
     skyboxShader.use();
@@ -258,8 +257,7 @@ int main() {
     // create color buffers
     unsigned int colorBuffers[2];
     glGenTextures(2, colorBuffers);
-    for (unsigned int i = 0; i < 2; i++)
-    {
+    for (unsigned int i = 0; i < 2; i++) {
         glBindTexture(GL_TEXTURE_2D, colorBuffers[i]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -289,8 +287,7 @@ int main() {
     unsigned int pingpongColorbuffers[2];
     glGenFramebuffers(2, pingpongFBO);
     glGenTextures(2, pingpongColorbuffers);
-    for (unsigned int i = 0; i < 2; i++)
-    {
+    for (unsigned int i = 0; i < 2; i++) {
         glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
         glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[i]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -349,7 +346,7 @@ int main() {
 
         // Lamp light position
         float lampAngle = glm::radians((float)cos(glfwGetTime())*100.0f)/4.0f;
-        float Yinit = 1.0f; // Otprilike
+        float Yinit = 1.0f;
         float lampY = Yinit + Yinit * cos(lampAngle);
         float lampZ = - Yinit * tan(lampAngle);
 
@@ -360,7 +357,7 @@ int main() {
         glm::vec3 moonLightColor = moonColor;
         if (bloodMoon) {
             moonColor = glm::vec3(1.5, 0.3, 0.0);
-            moonLightColor *= 0.5f;
+            moonLightColor *= 0.7f;
         }
         ourShader.setVec3("dirLight.ambient", glm::vec3(0.0, 0.0, 0.0));
         ourShader.setVec3("dirLight.diffuse", moonLightColor);
@@ -500,7 +497,7 @@ int main() {
         // Firefly - Flowers
         model = glm::mat4(1.0f);
         model = glm::translate(model, flowersFireflyPos);
-        model = glm::scale(model, glm::vec3(3.0f));
+        model = glm::scale(model, glm::vec3(1.5f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
@@ -508,7 +505,7 @@ int main() {
         // Firefly - Tree
         model = glm::mat4(1.0f);
         model = glm::translate(model, treeFireflyPos);
-        model = glm::scale(model, glm::vec3(3.0f));
+        model = glm::scale(model, glm::vec3(1.5f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
@@ -516,7 +513,7 @@ int main() {
         // Firefly - Torii
         model = glm::mat4(1.0f);
         model = glm::translate(model, toriiFireflyPos);
-        model = glm::scale(model, glm::vec3(3.0f));
+        model = glm::scale(model, glm::vec3(1.5f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
@@ -544,8 +541,7 @@ int main() {
         bool horizontal = true, first_iteration = true;
         unsigned int amount = 10;
         blurShader.use();
-        for (unsigned int i = 0; i < amount; i++)
-        {
+        for (unsigned int i = 0; i < amount; i++) {
             glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
             blurShader.setInt("horizontal", horizontal);
             glBindTexture(GL_TEXTURE_2D, first_iteration ? colorBuffers[1] : pingpongColorbuffers[!horizontal]);  // bind texture of other framebuffer (or scene if first iteration)
@@ -582,6 +578,10 @@ int main() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+
+    glDeleteVertexArrays(1, &skyboxVAO);
+    glDeleteBuffers(1, &skyboxVAO);
+
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();

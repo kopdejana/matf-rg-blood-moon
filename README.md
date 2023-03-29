@@ -1,22 +1,34 @@
-# project_base
-Prazan projekat sa pratećim bibliotekama koje koristimo na času. 
+# Blood Moon
 
-# Uputstvo
-- Kretanje: W/A/S/D
-- Spotlight on/off: F
-- Izlazak iz programa: ESC
+Computer Graphics course project. 
 
-# Implementirane lekcije
-- Obavezno:
-  - Nedelje 1-8
-  - Blending
-  - Face culling
-  - Advanced lighting
-- Grupa A:
-  - Cubemaps
-- Grupa B:
+[JoeyDeVries](https://github.com/JoeyDeVries) - [LearnOpenGL](https://github.com/JoeyDeVries/LearnOpenGL)  
+[spaske00](https://github.com/spaske00)- [Project base](https://github.com/matf-racunarska-grafika/project_base/)
 
-# Modeli
+# Resources
+- Download objects: https://drive.google.com/file/d/1ethHz0q2RQeGzDVf7ucS052hkjk39qjT/view?usp=sharing
+- Extract to `matf-rg-blood-moon/resources`
+
+# Keyboard instructions:
+
+`W` / `S` / `A` / `D` - camera movement <br>
+`LEFT` / `RIGHT` / `UP` / `DOWN` - camera rotation <br>
+`B` - blood moon on/off <br>
+`F` - spotlight on/off <br>
+`ESC` - exit
+
+# Implemented
+-[x] Required:
+  -[x] Weeks 1-8
+  -[x] Blending (discard)
+  -[x] Face culling
+  -[x] Advanced lighting
+-[x] Group A:
+  -[x] Cubemaps
+-[x] Group B:
+  -[x] HDR, Bloom
+
+# Models used
 - Terrain: https://sketchfab.com/3d-models/iceland-landscape-234bb55771984297b0cd2d46f04087d3
 - Torii: https://www.cgtrader.com/free-3d-models/architectural/other/low-resolution-old-torii
 - Lamp: https://archive3d.net/?a=download&id=d4326772
