@@ -115,7 +115,7 @@ int main() {
 
     // glfw window creation
     // --------------------
-    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Blood Moon", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -168,7 +168,6 @@ int main() {
     Shader bloomShader("resources/shaders/bloom.vs", "resources/shaders/bloom.fs");
 
     // load models
-    Model terrainModel("resources/objects/terrain/terrain.obj");
     Model treeModel("resources/objects/Tree/Tree Japanese maple N030123.obj");
     Model toriiModel("resources/objects/Torii/OldTorii.obj");
     Model lampModel("resources/objects/Lamp/Luster Grannys lamp N251121.obj");
@@ -177,6 +176,7 @@ int main() {
     Model fireflyModel("resources/objects/firefly/sphere.obj");
     Model stairsModel("resources/objects/StonePlatforms/StonePlatform_B.obj");
     Model basePlatformModel("resources/objects/StonePlatforms/StonePlatform_A.obj");
+    Model catModel("resources/objects/Cat/cat.obj");
 
     /////////////////////////////////////////////   SKYBOX  ///////////////////////////////////////////////////////////
 
@@ -526,6 +526,14 @@ int main() {
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         lampModel.Draw(ourShader);
+
+        // Cat
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(7.0f, -4.0f, 15.0f));
+        model = glm::scale(model, glm::vec3(0.04f));
+        ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
+        catModel.Draw(ourShader);
 
         // Torii2
         model = glm::mat4(1.0f);

@@ -27,9 +27,10 @@
   - HDR, Bloom <br>
 
 # Models used
-- Terrain: https://sketchfab.com/3d-models/iceland-landscape-234bb55771984297b0cd2d46f04087d3
+- Platforms: https://www.cgtrader.com/free-3d-models/exterior/landscape/stone-platforms-moss-1
 - Torii: https://www.cgtrader.com/free-3d-models/architectural/other/low-resolution-old-torii
 - Lamp: https://archive3d.net/?a=download&id=d4326772
 - Tree: https://archive3d.net/?a=download&id=ee6ee750
 - Flowers: https://archive3d.net/?a=download&id=cd86564b
 - Moon: https://sketchfab.com/3d-models/the-moon-9916fcec59f04b07b3e8d7f077dc3ded
+- Cat: https://www.cadnav.com/3d-models/model-48009.html
