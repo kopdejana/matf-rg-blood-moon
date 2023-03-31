@@ -174,6 +174,8 @@ int main() {
     Model flowersModel("resources/objects/Flowers/Flowers pot N300622.obj");
     Model moonModel("resources/objects/moon/moon.obj");
     Model fireflyModel("resources/objects/firefly/sphere.obj");
+    Model stairsModel("resources/objects/StonePlatforms/StonePlatform_B.obj");
+    Model basePlatformModel("resources/objects/StonePlatforms/StonePlatform_A.obj");
 
     /////////////////////////////////////////////   SKYBOX  ///////////////////////////////////////////////////////////
 
@@ -338,17 +340,24 @@ int main() {
 
         // Moon position
         float moonT = glfwGetTime();
-        float moonV = 0.3;
-        float moonR = 13.0;
+        float moonV = 0.4;
+        float moonR = 30.0;
         float moonX = cos(moonT*moonV)*moonR;
-        float moonY = 10.0f;
+        float moonY = 15.0f;
         float moonZ = sin(moonT*moonV)*moonR;
 
-        // Lamp light position
+        // Lamp1 light position
         float lampAngle = glm::radians((float)cos(glfwGetTime())*100.0f)/4.0f;
-        float Yinit = 1.0f;
-        float lampY = Yinit + Yinit * cos(lampAngle);
-        float lampZ = - Yinit * tan(lampAngle);
+        float Y1init = 2.2f;
+        float Z1init = -11.0f;
+        float lamp1Y = Y1init + Y1init * cos(lampAngle);
+        float lamp1Z = Z1init - Y1init * tan(lampAngle);
+
+        // Lamp2 light position
+        float Y2init = -1.2f;
+        float Z2init = 17.0f;
+        float lamp2Y = lamp1Y - 5.0f;
+        float lamp2Z = lamp1Z + 11.0f + 17.0f;
 
         ourShader.use();
 
@@ -365,14 +374,23 @@ int main() {
         ourShader.setVec3("dirLight.direction", glm::vec3(-moonX, -moonY, -moonZ));
         ourShader.setVec3("viewPos", programState->camera.Position);
 
-        // PointLight - Lamp
-        ourShader.setVec3("lamp.ambient", glm::vec3(0.0, 0.0, 0.0));
-        ourShader.setVec3("lamp.diffuse", glm::vec3(1.0, 0.3, 0.0));
-        ourShader.setVec3("lamp.specular", glm::vec3(1.0, 0.3, 0.0));
-        ourShader.setFloat("lamp.constant", 1.0f);
-        ourShader.setFloat("lamp.linear", 0.7f);
-        ourShader.setFloat("lamp.quadratic", 0.5f);
-        ourShader.setVec3("lamp.position", glm::vec3(2.0f, lampY, lampZ));
+        // PointLight - Lamp1
+        ourShader.setVec3("lamp1.ambient", glm::vec3(0.0, 0.0, 0.0));
+        ourShader.setVec3("lamp1.diffuse", glm::vec3(1.0, 0.3, 0.0));
+        ourShader.setVec3("lamp1.specular", glm::vec3(1.0, 0.3, 0.0)*2.0f);
+        ourShader.setFloat("lamp1.constant", 1.0f);
+        ourShader.setFloat("lamp1.linear", 0.3f);
+        ourShader.setFloat("lamp1.quadratic", 0.08f);
+        ourShader.setVec3("lamp1.position", glm::vec3(0.0f, lamp1Y, lamp1Z));
+
+        // PointLight - Lamp2
+        ourShader.setVec3("lamp2.ambient", glm::vec3(0.0, 0.0, 0.0));
+        ourShader.setVec3("lamp2.diffuse", glm::vec3(1.0, 0.3, 0.0));
+        ourShader.setVec3("lamp2.specular", glm::vec3(1.0, 0.3, 0.0)*2.0f);
+        ourShader.setFloat("lamp2.constant", 1.0f);
+        ourShader.setFloat("lamp2.linear", 0.3f);
+        ourShader.setFloat("lamp2.quadratic", 0.08f);
+        ourShader.setVec3("lamp2.position", glm::vec3(0.4f, lamp2Y, lamp2Z));
 
         // PointLights - fireflies
         float green = cos(glfwGetTime()) + 1.5f;
@@ -397,7 +415,7 @@ int main() {
         ourShader.setVec3("fireflies[0].position", toriiFireflyPos);
 
         // Tree firefly
-        glm::vec3 treeFireflyPos = glm::vec3(-cos(glfwGetTime()*2.0f)*0.4f, 5.0f, 7.0f);
+        glm::vec3 treeFireflyPos = glm::vec3(1.0f + cos(glfwGetTime()*2.0f)*0.4f, 10.5f, 7.0f);
         ourShader.setVec3("fireflies[1].ambient", fireflyAmbient);
         ourShader.setVec3("fireflies[1].diffuse", fireflyDiffuse);
         ourShader.setVec3("fireflies[1].specular", fireflySpecular);
@@ -436,36 +454,70 @@ int main() {
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        // Terrain
+        // Base Platform
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, -10.0f, 4.0f));
+        model = glm::scale(model, glm::vec3(2.0f));
+        ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
+        basePlatformModel.Draw(ourShader);
+
+        // Smaller Platform
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, -2.8f, -4.0f));
         model = glm::scale(model, glm::vec3(1.0f));
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
-        terrainModel.Draw(ourShader);
+        basePlatformModel.Draw(ourShader);
+
+        // Stairs
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, -2.2f, 10.0f));
+        model = glm::scale(model, glm::vec3(0.5f));
+        ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
+        stairsModel.Draw(ourShader);
 
         // Torii
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.2f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -11.0f));
+        model = glm::scale(model, glm::vec3(0.5f));
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         toriiModel.Draw(ourShader);
 
         // Lamp
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(2.0f, 2.1f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.001f));
-        model = glm::rotate(model, glm::radians((float)cos(glfwGetTime())*100.0f)/4.0f, glm::vec3(1.0, 0.0, 0.0));
+        model = glm::translate(model, glm::vec3(0.0f, 5.2f, -11.0f));
+        model = glm::scale(model, glm::vec3(0.003f));
+        model = glm::rotate(model, lampAngle, glm::vec3(1.0, 0.0, 0.0));
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         lampModel.Draw(ourShader);
 
+        // Torii2
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.4f, -5.0, 17.0f));
+        model = glm::scale(model, glm::vec3(0.5f));
+        ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
+        toriiModel.Draw(ourShader);
+
+        // Lamp2
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.4f, 0.2f, 17.0f));
+        model = glm::scale(model, glm::vec3(0.003f));
+        model = glm::rotate(model, lampAngle, glm::vec3(1.0, 0.0, 0.0));
+        ourShader.setMat4("model", model);
+        ourShader.setFloat("material.shininess", 1.0);
+        lampModel.Draw(ourShader);
+
+
         // Tree
         glDisable(GL_CULL_FACE); // all leaves are rendered
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 2.0f));
-        model = glm::scale(model, glm::vec3(0.025f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.05f));
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         treeModel.Draw(ourShader);
@@ -483,7 +535,7 @@ int main() {
         moonShader.setVec3("lightColor", moonColor);
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(moonX, moonY, moonZ));
-        model = glm::scale(model, glm::vec3(1.0f));
+        model = glm::scale(model, glm::vec3(2.0f));
         moonShader.setMat4("model", model);
         moonShader.setMat4("view", view);
         moonShader.setMat4("projection", projection);
@@ -499,7 +551,6 @@ int main() {
         model = glm::mat4(1.0f);
         model = glm::translate(model, flowersFireflyPos);
         model = glm::scale(model, glm::vec3(fireflyScale));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
 
@@ -507,7 +558,6 @@ int main() {
         model = glm::mat4(1.0f);
         model = glm::translate(model, treeFireflyPos);
         model = glm::scale(model, glm::vec3(fireflyScale));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
 
@@ -515,7 +565,6 @@ int main() {
         model = glm::mat4(1.0f);
         model = glm::translate(model, toriiFireflyPos);
         model = glm::scale(model, glm::vec3(fireflyScale));
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         fireflyShader.setMat4("model", model);
         fireflyModel.Draw(fireflyShader);
 
@@ -605,13 +654,13 @@ void processInput(GLFWwindow *window) {
         programState->camera.ProcessKeyboard(RIGHT, deltaTime);
 
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        programState->camera.ProcessYawPitch(-5.0f, 0.0f);
+        programState->camera.ProcessYawPitch(-15.0f, 0.0f);
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        programState->camera.ProcessYawPitch(+5.0f, 0.0f);
+        programState->camera.ProcessYawPitch(+15.0f, 0.0f);
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        programState->camera.ProcessYawPitch(0.0f, -5.0f);
+        programState->camera.ProcessYawPitch(0.0f, -15.0f);
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        programState->camera.ProcessYawPitch(0.0f, +5.0f);
+        programState->camera.ProcessYawPitch(0.0f, +15.0f);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

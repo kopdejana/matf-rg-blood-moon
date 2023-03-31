@@ -50,7 +50,8 @@ uniform sampler2D texture_diffuse1;
 
 uniform DirLight dirLight;
 
-uniform PointLight lamp;
+uniform PointLight lamp1;
+uniform PointLight lamp2;
 uniform PointLight[NR_FIREFLIES] fireflies;
 
 uniform SpotLight torch;
@@ -75,7 +76,8 @@ void main() {
     vec3 result = vec3(0.0);
 
     result += CalculateDirLight(dirLight, norm, viewDir, tex.xyz);
-    result += CalculatePointLight(lamp, norm, FragPos, viewDir, tex.xyz);
+    result += CalculatePointLight(lamp1, norm, FragPos, viewDir, tex.xyz);
+    result += CalculatePointLight(lamp2, norm, FragPos, viewDir, tex.xyz);
 
     if (bTorch == true)
         result += CalculateSpotLight(torch, norm, FragPos, viewDir, tex.xyz);
