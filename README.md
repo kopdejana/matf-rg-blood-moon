@@ -4,7 +4,7 @@
 [spaske00](https://github.com/spaske00)- [Project base](https://github.com/matf-racunarska-grafika/project_base/)
 
 # Resources
-- Download objects: https://drive.google.com/file/d/1SQspE6cK0Mz-6mqGIhZZ_bmBfNTmAQcW/view?usp=sharing
+- Download objects: https://drive.google.com/file/d/1hlqk8yHhCBLO4OGzDWDMX6K7VsBZlIzI/view?usp=sharing
 - Extract to `matf-rg-blood-moon/resources`
 
 # Keyboard instructions:
