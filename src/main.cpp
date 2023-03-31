@@ -425,7 +425,7 @@ int main() {
         ourShader.setVec3("fireflies[1].position", treeFireflyPos);
 
         // Flowers firefly
-        glm::vec3 flowersFireflyPos = glm::vec3(cos(glfwGetTime()) + 4.0, 1.0f, -cos(glfwGetTime()*4.0f) + 3.0f);
+        glm::vec3 flowersFireflyPos = glm::vec3(cos(glfwGetTime()) + 6.0, 2.0f, -cos(glfwGetTime()*4.0f));
         ourShader.setVec3("fireflies[2].ambient", fireflyAmbient);
         ourShader.setVec3("fireflies[2].diffuse", fireflyDiffuse);
         ourShader.setVec3("fireflies[2].specular", fireflySpecular);
@@ -523,8 +523,8 @@ int main() {
         treeModel.Draw(ourShader);
         // Flowers
         model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(4.0f, 0.1f, 4.0f));
-        model = glm::scale(model, glm::vec3(0.001f));
+        model = glm::translate(model, glm::vec3(6.0f, 0.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.003f));
         ourShader.setMat4("model", model);
         ourShader.setFloat("material.shininess", 1.0);
         flowersModel.Draw(ourShader);
@@ -542,7 +542,7 @@ int main() {
         moonModel.Draw(moonShader);
 
         // Fireflies
-        float fireflyScale = 0.5f;
+        float fireflyScale = 1.0f;
         fireflyShader.use();
         fireflyShader.setVec3("color", fireflyColor);
         fireflyShader.setMat4("projection", projection);
