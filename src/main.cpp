@@ -414,19 +414,19 @@ int main() {
         // PointLight - Lamp1
         ourShader.setVec3("lamp1.ambient", glm::vec3(0.0, 0.0, 0.0));
         ourShader.setVec3("lamp1.diffuse", glm::vec3(1.0, 0.0, 0.3));
-        ourShader.setVec3("lamp1.specular", glm::vec3(1.0, 0.0, 0.3)*2.0f);
+        ourShader.setVec3("lamp1.specular", glm::vec3(1.0, 0.0, 0.3)*3.0f);
         ourShader.setFloat("lamp1.constant", 1.0f);
-        ourShader.setFloat("lamp1.linear", 0.3f);
-        ourShader.setFloat("lamp1.quadratic", 0.08f);
+        ourShader.setFloat("lamp1.linear", 0.09f);
+        ourShader.setFloat("lamp1.quadratic", 0.03f);
         ourShader.setVec3("lamp1.position", glm::vec3(0.0f, lamp1Y, lamp1Z));
 
         // PointLight - Lamp2
         ourShader.setVec3("lamp2.ambient", glm::vec3(0.0, 0.0, 0.0));
         ourShader.setVec3("lamp2.diffuse", glm::vec3(1.0, 0.3, 0.0));
-        ourShader.setVec3("lamp2.specular", glm::vec3(1.0, 0.3, 0.0)*2.0f);
+        ourShader.setVec3("lamp2.specular", glm::vec3(1.0, 0.3, 0.0)*3.0f);
         ourShader.setFloat("lamp2.constant", 1.0f);
-        ourShader.setFloat("lamp2.linear", 0.5f);
-        ourShader.setFloat("lamp2.quadratic", 0.5f);
+        ourShader.setFloat("lamp2.linear", 0.09f);
+        ourShader.setFloat("lamp2.quadratic", 0.03f);
         ourShader.setVec3("lamp2.position", glm::vec3(0.4f, lamp2Y, lamp2Z));
 
         // PointLights - fireflies
@@ -580,7 +580,7 @@ int main() {
         moonShader.setVec3("lightColor", moonColor);
         model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(moonX, moonY, moonZ));
-        model = glm::scale(model, glm::vec3(2.0f));
+        model = glm::scale(model, glm::vec3(1.5f));
         moonShader.setMat4("model", model);
         moonShader.setMat4("view", view);
         moonShader.setMat4("projection", projection);
