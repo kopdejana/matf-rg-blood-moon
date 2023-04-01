@@ -49,6 +49,7 @@ bool bTorch = false;
 float spotlightRed = 1.0f;
 float spotlightGreen = 1.0f;
 float spotlightBlue = 1.0f;
+float spotlightIntensity = 1.0f;
 bool hdr = true;
 bool hdrKeyPressed = true;
 float exposure = 0.5f;
@@ -394,11 +395,15 @@ int main() {
         ourShader.use();
 
         // DirLight - Moon
-        glm::vec3 moonColor = glm::vec3(1.5, 1.0, 0.7);
-        glm::vec3 moonLightColor = moonColor;
+        glm::vec3 moonColor;
+        glm::vec3 moonLightColor;
         if (bloodMoon) {
             moonColor = glm::vec3(1.5, 0.3, 0.0);
-            moonLightColor *= 0.7f;
+            moonLightColor = glm::vec3(0.1f);
+        }
+        else {
+            moonColor = glm::vec3(1.5, 1.0, 0.7);
+            moonLightColor = moonColor;
         }
         ourShader.setVec3("dirLight.ambient", glm::vec3(0.0, 0.0, 0.0));
         ourShader.setVec3("dirLight.diffuse", moonLightColor);
@@ -408,8 +413,8 @@ int main() {
 
         // PointLight - Lamp1
         ourShader.setVec3("lamp1.ambient", glm::vec3(0.0, 0.0, 0.0));
-        ourShader.setVec3("lamp1.diffuse", glm::vec3(1.0, 0.3, 0.0));
-        ourShader.setVec3("lamp1.specular", glm::vec3(1.0, 0.3, 0.0)*2.0f);
+        ourShader.setVec3("lamp1.diffuse", glm::vec3(1.0, 0.0, 0.3));
+        ourShader.setVec3("lamp1.specular", glm::vec3(1.0, 0.0, 0.3)*2.0f);
         ourShader.setFloat("lamp1.constant", 1.0f);
         ourShader.setFloat("lamp1.linear", 0.3f);
         ourShader.setFloat("lamp1.quadratic", 0.08f);
@@ -420,8 +425,8 @@ int main() {
         ourShader.setVec3("lamp2.diffuse", glm::vec3(1.0, 0.3, 0.0));
         ourShader.setVec3("lamp2.specular", glm::vec3(1.0, 0.3, 0.0)*2.0f);
         ourShader.setFloat("lamp2.constant", 1.0f);
-        ourShader.setFloat("lamp2.linear", 0.3f);
-        ourShader.setFloat("lamp2.quadratic", 0.08f);
+        ourShader.setFloat("lamp2.linear", 0.5f);
+        ourShader.setFloat("lamp2.quadratic", 0.5f);
         ourShader.setVec3("lamp2.position", glm::vec3(0.4f, lamp2Y, lamp2Z));
 
         // PointLights - fireflies
@@ -466,18 +471,18 @@ int main() {
         ourShader.setFloat("fireflies[2].quadratic", fireflyQuadratic);
         ourShader.setVec3("fireflies[2].position", flowersFireflyPos);
 
-        // Spot Light - Torch
+        // Spotlight - Torch
         ourShader.setBool("bTorch", bTorch);
         ourShader.setVec3("torch.ambient", glm::vec3(0.0, 0.0, 0.0));
-        ourShader.setVec3("torch.diffuse", glm::vec3(1.0 + spotlightRed, 1.0 + spotlightGreen, 1.0 + spotlightBlue));
-        ourShader.setVec3("torch.specular", glm::vec3(1.0 + spotlightRed, 1.0 + spotlightGreen, 1.0 + spotlightBlue));
+        ourShader.setVec3("torch.diffuse", glm::vec3(spotlightRed, spotlightGreen, spotlightBlue)*spotlightIntensity);
+        ourShader.setVec3("torch.specular", glm::vec3(spotlightRed, spotlightGreen, spotlightBlue)*spotlightIntensity);
         ourShader.setFloat("torch.constant", 1.0f);
-        ourShader.setFloat("torch.linear", 0.2f);
-        ourShader.setFloat("torch.quadratic", 0.07f);
+        ourShader.setFloat("torch.linear", 0.09f);
+        ourShader.setFloat("torch.quadratic", 0.03f);
         ourShader.setVec3("torch.position", programState->camera.Position);
         ourShader.setVec3("torch.direction", programState->camera.Front);
-        ourShader.setFloat("torch.cutOff", cos(glm::radians(15.0f)));
-        ourShader.setFloat("torch.outerCutOff", cos(glm::radians(20.0f)));
+        ourShader.setFloat("torch.cutOff", cos(glm::radians(12.0f)));
+        ourShader.setFloat("torch.outerCutOff", cos(glm::radians(15.0f)));
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(programState->camera.Zoom),
@@ -690,7 +695,9 @@ int main() {
     ImGui::DestroyContext();
 
     glDeleteVertexArrays(1, &skyboxVAO);
-    glDeleteBuffers(1, &skyboxVAO);
+    glDeleteBuffers(1, &skyboxVBO);
+    glDeleteVertexArrays(1, &grassVAO);
+    glDeleteBuffers(1, &grassVBO);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
@@ -776,6 +783,7 @@ void DrawImGui(ProgramState *programState) {
         ImGui::SliderFloat("Red", &spotlightRed, 0.0f, 1.0f);
         ImGui::SliderFloat("Green", &spotlightGreen, 0.0f, 1.0f);
         ImGui::SliderFloat("Blue", &spotlightBlue, 0.0f, 1.0f);
+        ImGui::SliderFloat("Intensity", &spotlightIntensity, 1.0f, 5.0f);
         ImGui::End();
     }
 
@@ -793,11 +801,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
     }
-    if (key == GLFW_KEY_F && action == GLFW_PRESS) {
-        bTorch = !bTorch;
-    }
     if (key == GLFW_KEY_B && action == GLFW_PRESS) {
         bloodMoon = !bloodMoon;
+        bTorch = !bTorch;
     }
 }
 
