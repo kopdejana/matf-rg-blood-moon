@@ -12,7 +12,6 @@
 `W` / `S` / `A` / `D` - camera movement <br>
 `LEFT` / `RIGHT` / `UP` / `DOWN` - camera rotation <br>
 `B` - blood moon on/off <br>
-`F` - spotlight on/off <br>
 `ESC` - exit
 
 # Implemented
