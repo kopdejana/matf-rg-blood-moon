@@ -3,6 +3,8 @@
 [JoeyDeVries](https://github.com/JoeyDeVries) - [LearnOpenGL](https://github.com/JoeyDeVries/LearnOpenGL)  
 [spaske00](https://github.com/spaske00)- [Project base](https://github.com/matf-racunarska-grafika/project_base/)
 
+[Demo video](https://www.youtube.com/watch?v=UOYtS_ToGcw)
+
 # Resources
 - Download objects: https://drive.google.com/file/d/1hlqk8yHhCBLO4OGzDWDMX6K7VsBZlIzI/view?usp=sharing
 - Extract to `matf-rg-blood-moon/resources`
@@ -33,3 +35,9 @@
 - Flowers: https://archive3d.net/?a=download&id=cd86564b
 - Moon: https://sketchfab.com/3d-models/the-moon-9916fcec59f04b07b3e8d7f077dc3ded
 - Cat: https://www.cadnav.com/3d-models/model-48009.html
+
+# Preview
+
+![](resources/1.jpg)
+![](resources/2.jpg)
+![](resources/3.jpg)
